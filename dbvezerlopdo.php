@@ -3,10 +3,10 @@
 class DBController
 {
     private $conn = null;
-    private $host = "Localhost";
+    private $host = "localhost";
     private $user = "root";
     private $password = "";
-    private $dataase = "oscar";
+    private $database = "oscar";
 
     function __construct()
     {
@@ -18,30 +18,35 @@ class DBController
         try
         {
             $this->conn = new PDO("mysql:host={$this->host};
-            dbname ={$this->database};charset=utf8",
-            $this->user,$this->password);
-            $this->conn->setAttribute(PDO::ATTR_ERRMODE PDO::ERRODE_EXCEPTION);
+            dbname={$this->database};charset=utf8",
+            $this->user, $this->password);
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE,
+            PDO::ERRMODE_EXCEPTION);
         }
-        catch(PDOException $e)
+        catch (PDOException $e)
         {
-            die("connection failed: " . $e->getMessage())
+            die("Connection failed: " . $e->getMessage());
         }
     }
+
     function executeSelectQuery($query, $params =[])
     {
-        try{
-            $stmt=$this->conn->prepare($query)
+        try
+        {
+            $stmt=$this->conn->prepare($query);
             $stmt->execute($params);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
-        catch(PDOExeption $e){
+        catch (PDOException $e)
+        {
             die("Query failed: " . $e->getMessage());
-
         }
-        
     }
-    function closeDB(){
-     $this->conn=null;       
+
+    function closeDB()
+    {
+        $this->conn=null;    
     }
 }
+
 ?>
