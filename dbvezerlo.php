@@ -12,43 +12,32 @@ class DBVezerlo
     {
         $conn->connectDB();
         if (!empty($conn)) {
-            $this->conn;
+            $this->conn = $conn;
         }
     }
 
     function connectDB()
     {
-        try
-        {
-            $this->conn = new PDO("mysql:host={$this->host};
-            dbname={$this->database};charset=utf8",
-            $this->user, $this->password);
-            $this->conn->setAttribute(PDO::ATTR_ERRMODE,
-            PDO::ERRMODE_EXCEPTION);
-        }
-        catch (PDOException $e)
-        {
-            die("Connection failed: " . $e->getMessage());
-        }
+        $conn = mysqli_connect($his->host, $this->user, this->password, $his database);
     }
 
     function executeSelectQuery($query, $params =[])
     {
-        try
-        {
-            $stmt=$this->conn->prepare($query);
-            $stmt->execute($params);
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result = mysqli_query($this->conn, $query);
+        while($row=mysqli_fetch_assoc($result)){
+            $resultset[] = $row;
         }
-        catch (PDOException $e)
-        {
-            die("Query failed: " . $e->getMessage());
+        if (!empty($resultset)) {
+            return $resultset;
         }
     }
 
     function closeDB()
     {
-        $this->conn=null;    
+        if (!empty($this->conn)) {
+            mysqli_close($this->conn);
+            $this->conn=null; 
+        }
     }
 }
 
