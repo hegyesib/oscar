@@ -1,5 +1,5 @@
 <?php
-require_once()
+require_once();
 switch ($view) {
     case "all":
         $Oscarrest = new OscarrestKezelo();
